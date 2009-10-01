@@ -45,8 +45,8 @@ The default values are listed below:
 To add your own custom items just pass in a hash table to the gsCachinate() method.
 
   $("table.data").gsCachinate({
-    noDataMessage: "No more data here",
-    nextPageLinkText: "Please sir, can I have some more?",
+    noDataMessage: "No more data here"
+    nextPageLinkText: "Please sir, can I have some more?"
     queryStringKey: "p"
   })
 
