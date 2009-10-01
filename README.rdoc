@@ -7,7 +7,7 @@ and then simply unhidden. Once the next set of data is shown to the user another
 request is made to the server to be ready for when the user clicks the next link again,
 and on and on.
 
-= How to Use
+== How to Use
 
 Populate your table as you normally would for the first page of data.
 
@@ -31,7 +31,8 @@ Then call the plugin on the desired selector set
 If more data exists beyond what is currently contained within the table a "show more"
 link will be added just below the data containing table.
 
-= Options
+== Options
+
 The plugin does allow for some customization, ie. which message to display to the user
 when no data exists, the link text to, and the querystring variable name used to hold
 the page number of the data request.
