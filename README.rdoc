@@ -2,9 +2,10 @@
 
 Cachinate was created to speed up already existing pagination on the server side.  
 Instead of making the user wait for a second or two when they want to view the next
-page of tableized the next page is already javascript cached on the client side
-and then unhidden. Once the next set of data is shown to the user another ajax
-request is made to the server for the next chunk of table data.
+page, the next page of data is already javascript cached on the client side
+and then simply unhidden. Once the next set of data is shown to the user another ajax
+request is made to the server to be ready for when the user clicks the next link again,
+and on and on.
 
 = How to Use
 
@@ -35,10 +36,16 @@ The plugin does allow for some customization, ie. which message to display to th
 when no data exists, the link text to, and the querystring variable name used to hold
 the page number of the data request.
 
+The default values are listed below:
+  * noDataMessage => "No More Data Exists"
+  * nextPageLinkText => "View More"
+  * queryStringKey => "page"
+
 To add your own custom items just pass in a hash table to the gsCachinate() method.
 
   $("table.data").gsCachinate({
     noDataMessage: "No more data here",
-    nextPageLinkText: "Please sir, can I have some more",
+    nextPageLinkText: "Please sir, can I have some more?",
     queryStringKey: "p"
   })
+
