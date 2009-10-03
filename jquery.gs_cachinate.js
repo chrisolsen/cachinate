@@ -55,7 +55,6 @@
         if ($("a#" + viewMoreId).length == 0) {
           link = $("<a href='#'>")
             .attr("id", viewMoreId)
-            .attr("href", "#")
             .text(gsCachinateOptions["nextPageLinkText"])
             .insertAfter(dataElement)
         }
@@ -63,7 +62,7 @@
           link = $("a#" + viewMoreId)
         }
 
-        // bind the unique attributes
+        // rebind the link to get the next set of data 
         link.one("click", function() {
           dataElement.find("tbody").append(data) 
           getNextPage(currentPage + 1, dataElement)
