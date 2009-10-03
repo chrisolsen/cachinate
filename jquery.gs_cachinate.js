@@ -44,9 +44,8 @@
       
       var viewMoreId = 'gs-view-more'
       var link
-
       // Show or hide the data bases on whether more data exists
-      if (data.trim().length == 0) {
+      if (data.replace(/^\s+|\s+$/, "").length == 0) {
         $("a#" + viewMoreId).remove()
         dataElement.after("<div id='gs-no-data'>"+gsCachinateOptions["noDataMessage"]+"</div>")
       }
@@ -55,6 +54,7 @@
         if ($("a#" + viewMoreId).length == 0) {
           link = $("<a href='#'>")
             .attr("id", viewMoreId)
+            .attr("href", "#")
             .text(gsCachinateOptions["nextPageLinkText"])
             .insertAfter(dataElement)
         }
@@ -63,14 +63,12 @@
         }
 
         // bind the unique attributes
-        link
-          .attr("href", urlBase + (currentPage+1))
-          .one("click", function() {
-            dataElement.find("tbody").append(data) 
-            getNextPage(currentPage + 1, dataElement)
+        link.one("click", function() {
+          dataElement.find("tbody").append(data) 
+          getNextPage(currentPage + 1, dataElement)
 
-            return false
-          })
+          return false
+        })
 
       } // if
     }) // get
