@@ -38,13 +38,14 @@
    * to view more
    */
   function getNextPage(currentPage, dataElement) {
-    var urlBase = document.location.href + "?"+gsCachinateOptions["queryStringKey"]+"="
+    var urlBase = document.location.href+"?"+gsCachinateOptions["queryStringKey"]+"="
 
     $.get(urlBase + (currentPage + 1), function(data) {
       
       var viewMoreId = 'gs-view-more'
       var link
-      // Show or hide the data bases on whether more data exists
+
+      // Show or hide the data bases on whether more data (non-whitespace) exists
       if (data.replace(/\s/g, "").length == 0) {
         $("a#" + viewMoreId).remove()
         dataElement.after("<div id='gs-no-data'>"+gsCachinateOptions["noDataMessage"]+"</div>")
