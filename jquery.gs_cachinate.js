@@ -45,7 +45,7 @@
       var viewMoreId = 'gs-view-more'
       var link
       // Show or hide the data bases on whether more data exists
-      if (data.replace(/^\s+|\s+$/, "").length == 0) {
+      if (data.replace(/\s/g, "").length == 0) {
         $("a#" + viewMoreId).remove()
         dataElement.after("<div id='gs-no-data'>"+gsCachinateOptions["noDataMessage"]+"</div>")
       }
