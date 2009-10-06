@@ -38,7 +38,11 @@
    * to view more
    */
   function getNextPage(currentPage, dataElement) {
-    var urlBase = document.location.href+"?"+gsCachinateOptions["queryStringKey"]+"="
+    var urlBase = document.location.href
+    if (urlBase.indexOf("?") > -1)
+      urlBase += "&"+gsCachinateOptions["queryStringKey"]+"=" 
+    else
+      urlBase += "?"+gsCachinateOptions["queryStringKey"]+"="
 
     $.get(urlBase + (currentPage + 1), function(data) {
       
