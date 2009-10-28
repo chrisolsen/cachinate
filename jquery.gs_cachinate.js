@@ -70,7 +70,7 @@
 
         // rebind the link to get the next set of data 
         link.one("click", function() {
-          dataElement.find("tbody").append(data) 
+          dataElement.append(data) 
           getNextPage(currentPage + 1, dataElement)
 
           return false
