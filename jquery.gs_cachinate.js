@@ -11,7 +11,6 @@
  * Created By:
  *    Chris Olsen
  */
-
 (function($) {
 
   var gsCachinateOptions
@@ -19,9 +18,9 @@
   $.fn.gsCachinate = function(options) {
     
     var defaultOptions = {
-      noDataMessage: "No More Data Exists",
+      noDataMessage: "",
       nextPageLinkText: "View More",
-      queryStringKey: "page",
+      queryStringKey: "page"
     }
     
     options = options == null ? {} : options
@@ -38,7 +37,6 @@
    * to view more
    */
   function getNextPage(currentPage, dataElement) {
-    
     var urlBase = document.location.href
     if (urlBase.indexOf("?") > -1)
       urlBase += "&"+gsCachinateOptions["queryStringKey"]+"=" 
@@ -59,7 +57,8 @@
       else {
         // create or obtain the existing link to view the next page
         if ($("a#" + viewMoreId).length == 0) {
-          link = $("<a href='#'>")
+          var linkText = $.browser.msie ? "View More" : ""
+          link = $("<a href='#'>"+ linkText +"</a>")
             .attr("id", viewMoreId)
             .text(gsCachinateOptions["nextPageLinkText"])
             .insertAfter(dataElement)
@@ -68,6 +67,7 @@
           link = $("a#" + viewMoreId)
         }
 
+        // display the cached data to the user and
         // rebind the link to get the next set of data 
         link.one("click", function() {
           dataElement.append(data) 
