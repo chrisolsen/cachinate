@@ -13,7 +13,7 @@
  */
 (function($) {
 
-  var gsCachinateOptions
+  var gsCachinateOptions;
 
   $.fn.gsCachinate = function(options) {
     
@@ -21,13 +21,13 @@
       noDataMessage: "",
       nextPageLinkText: "View More",
       queryStringKey: "page"
-    }
+    };
     
-    options = options == null ? {} : options
-    gsCachinateOptions = $.extend(defaultOptions, options)
+    options = options == null ? {} : options;
+    gsCachinateOptions = $.extend(defaultOptions, options);
 
     return this.each(function() {
-      getNextPage(1, $(this))
+      getNextPage(1, $(this));
     })
   }
 
@@ -37,34 +37,38 @@
    * to view more
    */
   function getNextPage(currentPage, dataElement) {
-    var urlBase = document.location.href
+    var urlBase = document.location.href;
+
     if (urlBase.indexOf("?") > -1)
-      urlBase += "&"+gsCachinateOptions["queryStringKey"]+"=" 
+      urlBase += "&"+gsCachinateOptions["queryStringKey"]+"=";
     else
-      urlBase += "?"+gsCachinateOptions["queryStringKey"]+"="
+      urlBase += "?"+gsCachinateOptions["queryStringKey"]+"=";
 
     // ajax request
     $.get(urlBase + (currentPage + 1), function(data) {
       
-      var viewMoreId = 'gs-view-more'
-      var link
+      var viewMoreId = 'gs-view-more';
+      var link;
 
       // Show or hide the data bases on whether more data (non-whitespace) exists
       if (data.replace(/\s/g, "").length == 0) {
-        $("a#" + viewMoreId).remove()
-        dataElement.after("<div id='gs-no-data'>"+gsCachinateOptions["noDataMessage"]+"</div>")
+        $("a#" + viewMoreId).remove();
+        dataElement.after("<div id='gs-no-data'>"+gsCachinateOptions["noDataMessage"]+"</div>");
       }
       else {
         // create or obtain the existing link to view the next page
         if ($("a#" + viewMoreId).length == 0) {
-          var linkText = $.browser.msie ? "View More" : ""
+          // ie won't allow text to be set via .text() method 
+          var linkText = gsCachinateOptions["nextPageLinkText"];
+          var linkWrapper = $('<div id="gs-view-more-wrapper"></div>');
+
           link = $("<a href='#'>"+ linkText +"</a>")
-            .attr("id", viewMoreId)
-            .text(gsCachinateOptions["nextPageLinkText"])
-            .insertAfter(dataElement)
+            .attr("id", viewMoreId);
+
+          linkWrapper.append(link).insertAfter(dataElement);
         }
         else {
-          link = $("a#" + viewMoreId)
+          link = $("a#" + viewMoreId);
         }
 
         // display the cached data to the user and
@@ -73,9 +77,13 @@
           dataElement.append(data) 
           getNextPage(currentPage + 1, dataElement)
 
+          dataElement.trigger("after_show_next_page");
           return false
-        })
+        });
 
+        // dataElemet => initial object plugin called on
+        dataElement.trigger("after_cachinate");
+        
       } // if
     }) // get
   } // function
