@@ -20,7 +20,8 @@
     var defaultOptions = {
       noDataMessage: "",
       nextPageLinkText: "View More",
-      queryStringKey: "page"
+      queryStringKey: "page",
+      animate: false
     };
     
     options = options == null ? {} : options;
@@ -74,11 +75,20 @@
         // display the cached data to the user and
         // rebind the link to get the next set of data 
         link.one("click", function() {
-          dataElement.append(data) 
-          getNextPage(currentPage + 1, dataElement)
+          if ( gsCachinateOptions["animate"] ) {
+            var jdata = $(data);
+            jdata.css("display", "none");
+            dataElement.append(jdata)
+            jdata.slideDown();
+          }
+          else {
+            dataElement.append(data);
+          }
+
+          getNextPage(currentPage + 1, dataElement);
 
           dataElement.trigger("after_show_next_page");
-          return false
+          return false;
         });
 
         // dataElemet => initial object plugin called on
