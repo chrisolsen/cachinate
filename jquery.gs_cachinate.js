@@ -38,15 +38,9 @@
    * to view more
    */
   function getNextPage(currentPage, dataElement) {
-    var urlBase = document.location.href;
-
-    if (urlBase.indexOf("?") > -1)
-      urlBase += "&"+gsCachinateOptions["queryStringKey"]+"=";
-    else
-      urlBase += "?"+gsCachinateOptions["queryStringKey"]+"=";
-
+   
     // ajax request
-    $.get(urlBase + (currentPage + 1), function(data) {
+    $.get(getUrl(currentPage + 1), function(data) {
       
       var viewMoreId = 'gs-view-more';
       var link;
@@ -62,9 +56,11 @@
           // ie won't allow text to be set via .text() method 
           var linkText = gsCachinateOptions["nextPageLinkText"];
           var linkWrapper = $('<div id="gs-view-more-wrapper"></div>');
-
+					
           link = $("<a href='#'>"+ linkText +"</a>")
-            .attr("id", viewMoreId);
+            			.attr("id", viewMoreId)
+									.attr("href", getUrl(currentPage + 1))
+									.hide();
 
           linkWrapper.append(link).insertAfter(dataElement);
         }
@@ -72,22 +68,35 @@
           link = $("a#" + viewMoreId);
         }
 
+				// ensure the link is visible since it is hidden when it is clicked
+				$("a#" + viewMoreId).fadeIn();
+
         // display the cached data to the user and
         // rebind the link to get the next set of data 
         link.one("click", function() {
           if ( gsCachinateOptions["animate"] ) {
+						// append data with animation
             var jdata = $(data);
             jdata.css("display", "none");
             dataElement.append(jdata)
             jdata.slideDown();
+
+						// update link
+						$("a#" + viewMoreId)
+							.attr("href", getUrl(currentPage + 2)) /* update link href for testing purposes */
+							.fadeOut(); /* hide the View More link until we are sure there is more data */
           }
           else {
             dataElement.append(data);
           }
 
+					// notify any listeners to the ids that have been added
+					ids = jQuery.map($(data), function(n) { return n.id }).join(",");
+					dataElement.trigger("after_show_next_page", ids);
+
+					// make request for next page
           getNextPage(currentPage + 1, dataElement);
 
-          dataElement.trigger("after_show_next_page");
           return false;
         });
 
@@ -96,6 +105,18 @@
         
       } // if
     }) // get
+
+		function getUrl(page) {
+			var urlBase = document.location.href;
+
+			if (urlBase.indexOf("?") > -1)
+			  urlBase += "&"+gsCachinateOptions["queryStringKey"]+"=";
+			else
+			  urlBase += "?"+gsCachinateOptions["queryStringKey"]+"=";
+				
+			return urlBase + page
+		}
+
   } // function
 
 })(jQuery);
